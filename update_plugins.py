@@ -52,6 +52,7 @@ vim-flake8 https://github.com/nvie/vim-flake8
 vim-pug https://github.com/digitaltoad/vim-pug
 vim-yankstack https://github.com/maxbrunsfeld/vim-yankstack
 lightline.vim https://github.com/itchyny/lightline.vim
+vim-unimpaired https://github.com/tpope/vim-unimpaired
 """.strip()
 
 GITHUB_ZIP = '%s/archive/master.zip'
@@ -97,7 +98,15 @@ if __name__ == '__main__':
 
     try:
         if futures:
-            with futures.ThreadPoolExecutor(16) as executor:
+            thread_count=16
+
+            try:
+                import multiprocessing
+                thread_count=multiprocessing.cpu_count()
+            except (ImportError, NotImplementedError):
+                pass
+            print('Downloading using {0} threads'.format(thread_count))
+            with futures.ThreadPoolExecutor(thread_count) as executor:
                 executor.map(update, PLUGINS.splitlines())
         else:
             [update(x) for x in PLUGINS.splitlines()]
