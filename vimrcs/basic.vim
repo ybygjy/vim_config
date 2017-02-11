@@ -163,6 +163,11 @@ endif
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
+" Vim 在打开文时会根据fileencodings选项来识别文件编码，fileencodings可设置多个编码，Vim会根据顺序来猜测文件编码
+set fileencodings=ucs-bom,utf-8,cp936,gb18030
+" Vim在保存新建文件时会使用此编码对文件内容进行编码，如果是打开已有文件Vim会根据打开文件所识别的编码来保存
+set fileencoding=utf-8
+set termencoding=utf-8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
